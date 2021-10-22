@@ -4,13 +4,11 @@ ENV ROOT=/go/src/app
 WORKDIR ${ROOT}
 
 RUN apk update && apk add git
-COPY go.mod ./
-# COPY go.mod go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
-EXPOSE 8080
 
 COPY ./src ${ROOT}
-RUN GOOS=linux go build -o ${ROOT}/binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o ${ROOT}/binary
 
 #####
 
