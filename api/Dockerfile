@@ -10,18 +10,15 @@ RUN go mod download
 EXPOSE 8080
 
 COPY ./src ${ROOT}
-RUN go build -o ${ROOT}/binary
-
-EXPOSE 8080
-CMD ["/go/src/app/binary"]
+RUN GOOS=linux go build -o ${ROOT}/binary
 
 #####
 
-# FROM scratch as deployer
+FROM scratch as deployer
 
-# ENV ROOT=/go/src/app
-# WORKDIR ${ROOT}
-# COPY --from=builder ${ROOT}/binary ${ROOT}
+ENV ROOT=/go/src/app
+WORKDIR ${ROOT}
+COPY --from=builder ${ROOT}/binary ${ROOT}
 
-# EXPOSE 8080
-# CMD ["/go/src/app/binary"]
+EXPOSE 8080
+CMD ["/go/src/app/binary"]
