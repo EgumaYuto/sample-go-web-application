@@ -13,7 +13,11 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	Db, err = sql.Open("mysql", "root:example@tcp(db:3306)/test_db")
+	user := "root"
+	password := "example"
+	protocol := "tcp(db:3306)"
+	dbName := "test_db"
+	Db, err = sql.Open("mysql", user+":"+password+"@"+protocol+"/"+dbName)
 	if err != nil {
 		panic(err)
 	}
