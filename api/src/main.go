@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func hello(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	fmt.Fprintf(w, "Hello!")
 }
 
-func health(w http.ResponseWriter, r *http.Request) {
+func health(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	_, err := healthCheck()
 	if err != nil {
 		log.Println(err)
@@ -21,10 +23,14 @@ func health(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	mux := httprouter.New()
+
+	mux.GET("/health", health)
+	mux.GET("/hello", hello)
+
 	server := http.Server{
-		Addr: ":8080",
+		Addr:    ":8080",
+		Handler: mux,
 	}
-	http.HandleFunc("/hello", hello)
-	http.HandleFunc("/health", health)
 	server.ListenAndServe()
 }
