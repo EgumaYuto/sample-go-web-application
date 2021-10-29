@@ -39,3 +39,22 @@ func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.WriteHeader(200)
 	w.Write(output)
 }
+
+func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	todos, err := listTodo()
+	if err != nil {
+		log.Println("list failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	output, err := json.MarshalIndent(&todos, "", "\t\t")
+	if err != nil {
+		log.Println("marshal failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(output)
+}

@@ -29,7 +29,7 @@ func insertTodo(title string) (todo Todo, err error) {
 	insertStatement := "INSERT INTO TODO (TITLE) VALUES ( ? )"
 	insertStmt, err := Db.Prepare(insertStatement)
 	if err != nil {
-		log.Println("prepase failure: ", err)
+		log.Println("prepare failure: ", err)
 		return
 	}
 	defer insertStmt.Close()
@@ -41,5 +41,25 @@ func insertTodo(title string) (todo Todo, err error) {
 	}
 	todo.Id, err = res.LastInsertId()
 	todo.Title = title
+	return
+}
+
+func listTodo() (todos []Todo, err error) {
+	rows, err := Db.Query("SELECT ID, TITLE from TODO")
+	if err != nil {
+		log.Println("query failure: ", err)
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		todo := Todo{}
+		err = rows.Scan(&todo.Id, &todo.Title)
+		if err != nil {
+			log.Println("scan failure: ", err)
+			return
+		}
+		todos = append(todos, todo)
+	}
 	return
 }
