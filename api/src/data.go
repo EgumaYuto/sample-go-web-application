@@ -40,5 +40,6 @@ func insertTodo(title string) (todo Todo, err error) {
 		return
 	}
 	todo.Id, err = res.LastInsertId()
+	todo.Title = title
 	return
 }

@@ -26,7 +26,16 @@ func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if err != nil {
 		log.Println("add failure: ", err)
 		w.WriteHeader(500)
-	} else {
-		w.WriteHeader(200)
+		return
 	}
+
+	output, err := json.MarshalIndent(&todo, "", "\t\t")
+	if err != nil {
+		log.Println("marshal failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(output)
 }
