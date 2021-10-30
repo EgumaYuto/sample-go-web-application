@@ -6,24 +6,20 @@ import (
 	"net/http"
 	"strconv"
 
+	"cabos.io/model"
 	"github.com/julienschmidt/httprouter"
 )
-
-type Todo struct {
-	Id    int64  `json:"id"`
-	Title string `json:"title"`
-}
 
 func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	len := r.ContentLength
 	body := make([]byte, len)
 	r.Body.Read(body)
 
-	var todo Todo
+	var todo model.Todo
 	json.Unmarshal(body, &todo)
 
 	var err error
-	todo, err = insertTodo(todo.Title)
+	todo, err = model.InsertTodo(todo.Title)
 	if err != nil {
 		log.Println("add failure: ", err)
 		w.WriteHeader(500)
@@ -42,7 +38,7 @@ func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 }
 
 func getTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	todos, err := listTodo()
+	todos, err := model.GetTodoList()
 	if err != nil {
 		log.Println("list failure: ", err)
 		w.WriteHeader(500)
@@ -68,7 +64,7 @@ func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		return
 	}
 
-	todo, err := getTodoById(id)
+	todo, err := model.GetTodoById(id)
 
 	if err != nil {
 		log.Println("get failure: ", err)

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"cabos.io/model"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -13,7 +14,7 @@ func hello(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 }
 
 func health(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	_, err := healthCheck()
+	_, err := model.HealthCheck()
 	if err != nil {
 		log.Println(err)
 		fmt.Fprintf(w, "Error!!")

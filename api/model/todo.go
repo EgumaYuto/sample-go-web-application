@@ -1,33 +1,15 @@
-package main
+package model
 
-import (
-	"database/sql"
-	"log"
+import "log"
 
-	_ "github.com/go-sql-driver/mysql"
-)
-
-var Db *sql.DB
-
-func init() {
-	var err error
-	user := "root"
-	password := "example"
-	protocol := "tcp(db:3306)"
-	dbName := "test_db"
-	Db, err = sql.Open("mysql", user+":"+password+"@"+protocol+"/"+dbName)
-	if err != nil {
-		panic(err)
-	}
+type Todo struct {
+	Id    int64
+	Title string
 }
 
-func healthCheck() (sql.Result, error) {
-	return Db.Exec("select 1")
-}
-
-func insertTodo(title string) (todo Todo, err error) {
+func InsertTodo(title string) (todo Todo, err error) {
 	insertStatement := "INSERT INTO TODO (TITLE) VALUES ( ? )"
-	insertStmt, err := Db.Prepare(insertStatement)
+	insertStmt, err := db.Prepare(insertStatement)
 	if err != nil {
 		log.Println("prepare failure: ", err)
 		return
@@ -44,8 +26,8 @@ func insertTodo(title string) (todo Todo, err error) {
 	return
 }
 
-func listTodo() (todos []Todo, err error) {
-	rows, err := Db.Query("SELECT ID, TITLE from TODO")
+func GetTodoList() (todos []Todo, err error) {
+	rows, err := db.Query("SELECT ID, TITLE from TODO")
 	if err != nil {
 		log.Println("query failure: ", err)
 		return
@@ -65,8 +47,8 @@ func listTodo() (todos []Todo, err error) {
 	return
 }
 
-func getTodoById(id int) (todo Todo, err error) {
-	stmt, err := Db.Prepare("SELECT ID, TITLE from TODO WHERE ID = ? ")
+func GetTodoById(id int) (todo Todo, err error) {
+	stmt, err := db.Prepare("SELECT ID, TITLE from TODO WHERE ID = ? ")
 	if err != nil {
 		log.Println("prepare failure: ", err)
 		return
