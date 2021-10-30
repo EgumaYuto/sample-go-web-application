@@ -58,3 +58,15 @@ func GetTodoById(id int) (todo Todo, err error) {
 	err = stmt.QueryRow(id).Scan(&todo.Id, &todo.Title)
 	return
 }
+
+func DeleteTodoById(id int) (err error) {
+	stmt, err := db.Prepare("DELETE FROM TODO WHERE ID = ? ")
+	if err != nil {
+		log.Println("prepare failure: ", err)
+		return
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	return
+}

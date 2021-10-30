@@ -14,6 +14,7 @@ func main() {
 	mux.PUT("/todo", controller.AddTodo)
 	mux.GET("/todo", controller.GetTodoList)
 	mux.GET("/todo/:id", controller.GetTodo)
+	mux.DELETE("/todo/:id", controller.DeleteTodo)
 
 	server := http.Server{
 		Addr:    ":8080",

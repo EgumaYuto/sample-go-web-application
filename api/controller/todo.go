@@ -82,3 +82,25 @@ func GetTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.WriteHeader(200)
 	w.Write(output)
 }
+
+func DeleteTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	id, err := strconv.Atoi(p.ByName("id"))
+	if err != nil {
+		log.Println("parse failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	model.DeleteTodoById(id)
+
+	todo := model.Todo{Id: int64(id)}
+	output, err := json.MarshalIndent(&todo, "", "\t\t")
+	if err != nil {
+		log.Println("marshal failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(output)
+}
