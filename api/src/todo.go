@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -40,7 +41,7 @@ func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.Write(output)
 }
 
-func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func getTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	todos, err := listTodo()
 	if err != nil {
 		log.Println("list failure: ", err)
@@ -49,6 +50,33 @@ func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 
 	output, err := json.MarshalIndent(&todos, "", "\t\t")
+	if err != nil {
+		log.Println("marshal failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(output)
+}
+
+func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	id, err := strconv.Atoi(p.ByName("id"))
+	if err != nil {
+		log.Println("parse failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	todo, err := getTodoById(id)
+
+	if err != nil {
+		log.Println("get failure: ", err)
+		w.WriteHeader(500)
+		return
+	}
+
+	output, err := json.MarshalIndent(&todo, "", "\t\t")
 	if err != nil {
 		log.Println("marshal failure: ", err)
 		w.WriteHeader(500)

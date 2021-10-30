@@ -28,7 +28,8 @@ func main() {
 	mux.GET("/health", health)
 	mux.GET("/hello", hello)
 	mux.PUT("/todo", addTodo)
-	mux.GET("/todo", getTodo)
+	mux.GET("/todo", getTodoList)
+	mux.GET("/todo/:id", getTodo)
 
 	server := http.Server{
 		Addr:    ":8080",

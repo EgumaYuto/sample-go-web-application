@@ -63,3 +63,15 @@ func listTodo() (todos []Todo, err error) {
 	}
 	return
 }
+
+func getTodoById(id int) (todo Todo, err error) {
+	stmt, err := Db.Prepare("SELECT ID, TITLE from TODO WHERE ID = ? ")
+	if err != nil {
+		log.Println("prepare failure: ", err)
+		return
+	}
+	defer stmt.Close()
+
+	err = stmt.QueryRow(id).Scan(&todo.Id, &todo.Title)
+	return
+}
