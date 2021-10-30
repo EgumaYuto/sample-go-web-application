@@ -52,6 +52,7 @@ func listTodo() (todos []Todo, err error) {
 	}
 	defer rows.Close()
 
+	todos = []Todo{}
 	for rows.Next() {
 		todo := Todo{}
 		err = rows.Scan(&todo.Id, &todo.Title)
