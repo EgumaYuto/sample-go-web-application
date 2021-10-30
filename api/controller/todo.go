@@ -1,4 +1,4 @@
-package main
+package controller
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func AddTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	len := r.ContentLength
 	body := make([]byte, len)
 	r.Body.Read(body)
@@ -37,7 +37,7 @@ func addTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.Write(output)
 }
 
-func getTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func GetTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	todos, err := model.GetTodoList()
 	if err != nil {
 		log.Println("list failure: ", err)
@@ -56,7 +56,7 @@ func getTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.Write(output)
 }
 
-func getTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func GetTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	id, err := strconv.Atoi(p.ByName("id"))
 	if err != nil {
 		log.Println("parse failure: ", err)

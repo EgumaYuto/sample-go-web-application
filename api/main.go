@@ -1,36 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
-	"cabos.io/model"
+	"cabos.io/controller"
 	"github.com/julienschmidt/httprouter"
 )
-
-func hello(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	fmt.Fprintf(w, "Hello!")
-}
-
-func health(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	_, err := model.HealthCheck()
-	if err != nil {
-		log.Println(err)
-		fmt.Fprintf(w, "Error!!")
-	} else {
-		fmt.Fprintf(w, "OK!")
-	}
-}
 
 func main() {
 	mux := httprouter.New()
 
-	mux.GET("/health", health)
-	mux.GET("/hello", hello)
-	mux.PUT("/todo", addTodo)
-	mux.GET("/todo", getTodoList)
-	mux.GET("/todo/:id", getTodo)
+	mux.GET("/health", controller.Health)
+	mux.PUT("/todo", controller.AddTodo)
+	mux.GET("/todo", controller.GetTodoList)
+	mux.GET("/todo/:id", controller.GetTodo)
 
 	server := http.Server{
 		Addr:    ":8080",
