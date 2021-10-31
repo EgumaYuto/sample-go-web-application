@@ -10,7 +10,7 @@ import (
 func main() {
 	mux := httprouter.New()
 
-	mux.GET("/health", controller.Health)
+	mux.GET("/health", controller.HealthController{}.GetHealthStatus)
 	mux.PUT("/todo", controller.AddTodo)
 	mux.GET("/todo", controller.GetTodoList)
 	mux.GET("/todo/:id", controller.GetTodo)
