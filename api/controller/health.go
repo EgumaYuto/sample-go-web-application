@@ -11,7 +11,7 @@ import (
 
 type HealthController struct{}
 
-func (_ HealthController) GetHealthStatus(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (controller HealthController) GetHealthStatus(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	_, err := model.HealthCheck()
 	if err != nil {
 		log.Println(err)
