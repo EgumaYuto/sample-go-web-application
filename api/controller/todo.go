@@ -60,7 +60,7 @@ func GetTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	id, err := strconv.Atoi(p.ByName("id"))
 	if err != nil {
 		log.Println("parse failure: ", err)
-		w.WriteHeader(500)
+		w.WriteHeader(400)
 		return
 	}
 
@@ -87,7 +87,7 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	id, err := strconv.Atoi(p.ByName("id"))
 	if err != nil {
 		log.Println("parse failure: ", err)
-		w.WriteHeader(500)
+		w.WriteHeader(400)
 		return
 	}
 
