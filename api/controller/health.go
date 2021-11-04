@@ -15,8 +15,8 @@ func (controller HealthController) GetHealthStatus(w http.ResponseWriter, r *htt
 	_, err := model.HealthCheck()
 	if err != nil {
 		log.Println(err)
-		fmt.Fprintf(w, "Error!!")
+		fmt.Fprintf(w, "{\"status\":\"NG\"}")
 	} else {
-		fmt.Fprintf(w, "OK!")
+		fmt.Fprintf(w, "{\"status\":\"OK\"}")
 	}
 }
