@@ -12,7 +12,7 @@ func main() {
 
 	mux.GET("/health", controller.HealthController{}.GetHealthStatus)
 	mux.PUT("/todo", controller.TodoController{}.AddTodo)
-	mux.GET("/todo", controller.GetTodoList)
+	mux.GET("/todo", controller.TodoController{}.GetTodoList)
 	mux.GET("/todo/:id", controller.GetTodo)
 	mux.DELETE("/todo/:id", controller.DeleteTodo)
 

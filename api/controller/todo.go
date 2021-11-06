@@ -39,7 +39,7 @@ func (controller TodoController) AddTodo(w http.ResponseWriter, r *http.Request,
 	w.Write(output)
 }
 
-func GetTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (controller TodoController) GetTodoList(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	todos, err := model.GetTodoList()
 	if err != nil {
 		log.Println("list failure: ", err)
