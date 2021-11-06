@@ -10,7 +10,9 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func AddTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+type TodoController struct{}
+
+func (controller TodoController) AddTodo(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	len := r.ContentLength
 	body := make([]byte, len)
 	r.Body.Read(body)
